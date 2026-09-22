@@ -1,12 +1,12 @@
- name: First Github Actions Workflow
- on:
+name: First Github Actions Workflow
+on:
   workflow_dispatch:
 
- jobs:
-   first-job:
-     runs-on: ubuntu-latest
+jobs:
+  first-job:
+    runs-on: ubuntu-latest
 
-     steps:
+    steps:
       - name: Print Welcome
         run: echo "Welcome to Github Actions!"
 
