@@ -1,0 +1,298 @@
+
+Q.1  Scenario:  You've just onboarded at AWS as an intern. Your manager gives you a CSV export of server metrics. Write an R script that stores the server name, CPU usage (%), RAM available (GB), and whether the server is online (TRUE/FALSE) in appropriately typed variables. Print each variable with a descriptive label. 
+Ans:
+server_name <- "AWS-server-o1"
+
+cpu_usage <- 72.5
+ram_available <- 16
+
+server_online <- TRUE
+
+cat("Server Name:",server_name,"\n")
+cat("CPU Usage (%):",cpu_usage,"\n")
+cat("RAM Available (GB):",ram_available,"\n")
+cat("Server Online:",server_online,"\n")
+
+Q.2  Scenario:  Your SRE team uses R scripts for on-call runbooks. Write a well-commented R script that calculates the total disk usage across 5 virtual machines (values in GB). Comments should explain each step as if a teammate is reading the runbook during an incident at 3 AM. 
+Ans:
+vm1 <- 120
+vm2 <- 150
+vm3 <- 95
+vm4 <- 180
+vm5 <- 110
+
+total_disk_usage <- vm1 +vm2 + vm3 + vm4 +vm5
+
+print(paste("Total Disk Usage (GB):",total_disk_usage))
+
+Q.3-  Scenario:  Your team needs to calculate the monthly cloud bill. You have: base compute cost ($4,200), storage cost ($780), data egress cost ($1,150), and a 12% discount coupon. Write an R script using arithmetic operators to compute the final bill after the discount. Also compute what percentage each category contributes to the pre-discount total. 
+Ans:
+compute_cost <- 4200
+storage_cost <- 780
+data_egress_cost <- 1150
+
+discount <- 12
+pre_discount_total <- compute_cost + storage_cost + data_egress_cost
+
+discount_amount <- pre_discount_total * (discount / 100)
+
+final_bill <- pre_discount_total - discount_amount
+
+compute_percent <- (compute_cost / pre_discount_total) * 100
+storage_percent <- (storage_cost / pre_discount_total) * 100
+data_egress_percent <- (data_egress_cost / pre_discount_total) * 100
+
+cat("Pre-discount Total: $", pre_discount_total, "\n")
+cat("Discount Amount: $", discount_amount, "\n")
+cat("Final Bill: $", final_bill, "\n")
+cat("Compute Contribution:", round(compute_percent, 2), "%\n")
+cat("Storage Contribution:", round(storage_percent, 2), "%\n")
+cat("Data Egress Contribution:", round(data_egress_percent, 2), "%\n")
+
+
+Q.4-Scenario:  You are building an automated alert message system. Given a server name (e.g., 'prod-db-01'), region ('us-east-1'), and alert level ('CRITICAL'), use R string functions to: (a) convert the alert level to lowercase, (b) count the number of characters in the server name, (c) build a final alert string: '[CRITICAL] proddb-01 in us-east-1 is DOWN'.  
+Ans:
+server_name <- "prod-db-01"
+region <- "us-east-1"
+alert_level <- "CRITICAL"
+
+alert_lower <- tolower(alert_level)
+
+server_length <- nchar(server_name)
+
+alert_message <- sprintf("[%s] %s in %s is DOWN",
+                         alert_level,
+                         server_name,
+                         region)
+
+cat("Alert Level (Lowercase):", alert_lower, "\n")
+cat("Server Name Character Count:", server_length, "\n")
+cat("Final Alert Message:", alert_message, "\n")
+
+
+Q.5- Scenario:  You are writing a health-check script. Given a server's CPU usage value (input as a variable), write an R if-else chain that prints: 'Healthy' if CPU < 60%, 'Warning' if CPU is 60–85%, 'Critical' if CPU > 85%. Test your script with values 45, 72, and 91. 
+Ans:
+cpu_values <- c(45, 72, 91)
+
+for (cpu in cpu_values) {
+  
+  cat("CPU Usage:", cpu, "% - ")
+  
+  if (cpu < 60) {
+    print("Healthy")
+  } else if (cpu >= 60 && cpu <= 85) {
+    print("Warning")
+  } else {
+    print("Critical")
+  }
+}
+
+
+Q.6- Scenario:  During a load test, your application retries a failed API call every 5 seconds. Simulate this in R: use a while loop that starts with attempt = 1, prints 'Attempt X: Retrying connection...' each iteration, and stops after 5 attempts (simulating max retries). On exit, print 'Max retries reached. Escalating to on-call engineer.' 
+Ans
+attempt <- 1
+
+while (attempt <= 5) {
+  
+  cat("Attempt", attempt, ": Retrying connection...\n")
+  
+  attempt <- attempt + 1
+}
+
+cat("Max retries reached. Escalating to on-call engineer.\n")
+
+
+response_times <- c(120, 340, 89, 450, 210, 95)
+
+for (i in seq_along(response_times)) {
+  
+  if (response_times[i] < 200) {
+    cat("Server", i, ": OK (", response_times[i], "ms)\n")
+  } else {
+    cat("Server", i, ": SLOW (", response_times[i], "ms)\n")
+  }
+}
+
+
+Q.7- Your company uses a 3×3 grid of data centers (3 regions × 3 availability zones). Write a nested for loop in R to print a connectivity check table: for each region ('us', 'eu', 'ap') and each zone ('z1', 'z2', 'z3'), print 'Checking us-z1... OK' etc. Simulate one failure: 'eu-z2' should print 'TIMEOUT' instead of 'OK'. 
+
+Ans:
+regions <- c("us", "eu", "ap")
+zones <- c("z1", "z2", "z3")
+
+for (region in regions) {
+  
+  for (zone in zones) {
+    
+    if (region == "eu" && zone == "z2") {
+      cat("Checking", paste(region, zone, sep = "-"), "... TIMEOUT\n")
+    } else {
+      cat("Checking", paste(region, zone, sep = "-"), "... OK\n")
+    }
+    
+  }
+}
+
+
+Q.8-  Scenario:  Write a reusable R function called check_uptime() that takes two arguments: total_minutes (total time in a month) and downtime_minutes. The function should: calculate uptime %, print the SLA tier ('Gold' ≥ 99.9%, 'Silver' ≥ 99%, 'Bronze' ≥ 95%, 'Below SLA' otherwise), and return the uptime percentage. Test it with: (43200, 30), (43200, 300), (43200, 2500). 
+Ans:
+
+check_uptime <- function(total_minutes, downtime_minutes) {
+  
+    uptime_percent <- ((total_minutes - downtime_minutes) / total_minutes) * 100
+  
+    if (uptime_percent >= 99.9) {
+    cat("SLA Tier: Gold\n")
+  } else if (uptime_percent >= 99.0) {
+    cat("SLA Tier: Silver\n")
+  } else if (uptime_percent >= 95.0) {
+    cat("SLA Tier: Bronze\n")
+  } else {
+    cat("SLA Tier: Below SLA\n")
+  }
+  
+    cat("Uptime Percentage:", round(uptime_percent, 3), "%\n\n")
+  
+    return(uptime_percent)
+}
+
+check_uptime(43200, 30)
+check_uptime(43200, 300)
+check_uptime(43200, 2500)
+
+
+Q.9- You collect CPU usage readings (%) every hour for 10 hours from a payment gateway server: c(45, 52, 61, 78, 85, 90, 88, 72, 63, 55). Using R vector operations: (a) find the peak CPU hour (index), (b) find all hours where CPU exceeded 75%, (c) compute the average CPU usage, (d) add a new reading of 48% for hour 11 and print the updated vector. 
+Ans:
+cpu_usage <- c(45, 52, 61, 78, 85, 90, 88, 72, 63, 55)
+
+# (a) Find the peak CPU hour (index)
+peak_hour <- which(cpu_usage == max(cpu_usage))
+
+# (b) Find all hours where CPU exceeded 75%
+high_cpu_hours <- which(cpu_usage > 75)
+
+# (c) Compute the average CPU usage
+average_cpu <- mean(cpu_usage)
+
+# (d) Add a new reading of 48% for hour 11
+cpu_usage <- c(cpu_usage, 48)
+
+cat("Peak CPU Hour:", peak_hour, "\n")
+cat("Hours with CPU > 75%:", high_cpu_hours, "\n")
+cat("Average CPU Usage:", round(average_cpu, 2), "%\n")
+cat("Updated CPU Usage Vector:\n")
+print(cpu_usage)
+
+
+
+Q.11- Scenario:  Create an R list called incident that stores a support ticket with the following fields: ticket_id ('INC-2024-001'), severity (2), description ('Database connection pool exhausted'), affected_services (a vector: 'auth-service', 'payment-service'), resolved (FALSE). Access and print each field individually. Then update resolved to TRUE and print the updated list. 
+Ans:
+incident <- list(
+  ticket_id = "INC-2024-001",
+  severity = 2,
+  description = "Database connection pool exhausted",
+  affected_services = c("auth-service", "payment-service"),
+  resolved = FALSE
+)
+
+cat("Ticket ID:", incident$ticket_id, "\n")
+cat("Severity:", incident$severity, "\n")
+cat("Description:", incident$description, "\n")
+cat("Affected Services:", incident$affected_services, "\n")
+cat("Resolved:", incident$resolved, "\n")
+
+cat("Ticket ID using [[ ]]:", incident[[1]], "\n")
+
+incident$resolved <- TRUE
+
+cat("\nUpdated Incident List:\n")
+print(incident)
+
+
+Q.12- Scenario:  You receive a weekly resource utilization report. Create an R data frame with 5 rows representing 5 virtual machines, with columns: vm_name, cpu_usage (%), ram_used_gb, status ('running'/'stopped'). (a) Display only VMs with cpu_usage > 70%. (b) Add a new column cost_per_hour (assume $0.05 per % CPU). (c) Print the data frame sorted by cpu_usage descending. 
+Ans:
+vm_data <- data.frame(
+  vm_name = c("VM1", "VM2", "VM3", "VM4", "VM5"),
+  cpu_usage = c(65, 82, 45, 91, 75),
+  ram_used_gb = c(8, 16, 4, 32, 12),
+  status = c("running", "running", "stopped", "running", "running")
+)
+
+cat("Original Data Frame:\n")
+print(vm_data)
+
+cat("\nVMs with CPU Usage > 70%:\n")
+print(subset(vm_data, cpu_usage > 70))
+
+vm_data$cost_per_hour <- vm_data$cpu_usage * 0.05
+
+sorted_vm_data <- vm_data[order(-vm_data$cpu_usage), ]
+
+cat("\nSorted Data Frame (CPU Usage Descending):\n")
+print(sorted_vm_data)
+
+
+Q.13- Scenario:  Your team is analyzing API latency data (in ms) collected over 12 hours: c(145, 132, 189, 210, 98, 345, 122, 167, 201, 155, 143, 178). Calculate: (a) mean latency, (b) median latency, (c) max and min latency, (d) the difference between the max and min (latency range). Write a brief 2-line comment interpreting what high latency range means for a production system. 
+Ans:
+latency <- c(145, 132, 189, 210, 98, 345, 122, 167, 201, 155, 143, 178)
+
+mean_latency <- mean(latency)
+
+median_latency <- median(latency)
+
+max_latency <- max(latency)
+min_latency <- min(latency)
+
+latency_range <- max_latency - min_latency
+
+cat("Mean Latency:", mean_latency, "ms\n")
+cat("Median Latency:", median_latency, "ms\n")
+cat("Maximum Latency:", max_latency, "ms\n")
+cat("Minimum Latency:", min_latency, "ms\n")
+cat("Latency Range:", latency_range, "ms\n")
+
+
+
+Q.14-Scenario:  In SRE, the P95 and P99 latency are critical SLO metrics. You have response times (ms) for 20 API calls. Generate a sample using: set.seed(42); latency <- round(rnorm(20, mean=200, sd=50)). Then compute: (a) P50, P90, P95, P99 using quantile(), (b) print whether P95 exceeds your SLO threshold of 350ms, (c) visualize the distribution using a simple histogram with a title 'API Latency Distribution'. 
+Ans:
+set.seed(42)
+latency <- round(rnorm(20, mean = 200, sd = 50))
+
+percentiles <- quantile(latency, probs = c(0.50, 0.90, 0.95, 0.99))
+
+cat("P50:", percentiles[1], "ms\n")
+cat("P90:", percentiles[2], "ms\n")
+cat("P95:", percentiles[3], "ms\n")
+cat("P99:", percentiles[4], "ms\n")
+
+if (percentiles[3] > 350) {
+  cat("P95 exceeds the SLO threshold of 350 ms.\n")
+} else {
+  cat("P95 is within the SLO threshold of 350 ms.\n")
+}
+
+hist(latency,
+     main = "API Latency Distribution",
+     xlab = "Latency (ms)",
+     col = "lightblue",
+     border = "black")
+
+
+
+Q.15- Scenario:  You are preparing a monthly infrastructure cost report for your manager. Given the following monthly cloud costs by service: Compute=$5200, Storage=$1800, Networking=$950, Database=$2300, Security=$600 — create a labeled bar chart in R with: (a) appropriate title 'Monthly Cloud Cost Breakdown', (b) colored bars (use col= with at least 3 colors), (c) x-axis label 'Cloud Service', (d) y-axis label 'Cost (USD)', (e) values displayed on top of each bar using text(). 
+Ans:
+services <- c("Compute", "Storage", "Networking", "Database", "Security")
+costs <- c(5200, 1800, 950, 2300, 600)
+
+bars <- barplot(costs,
+                names.arg = services,
+                main = "Monthly Cloud Cost Breakdown",
+                xlab = "Cloud Service",
+                ylab = "Cost (USD)",
+                col = c("blue", "green", "orange", "purple", "red"))
+
+text(x = bars,
+     y = costs,
+     labels = costs,
+     pos = 3,
+     cex = 0.8)

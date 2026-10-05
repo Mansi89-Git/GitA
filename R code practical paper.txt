@@ -1,0 +1,137 @@
+Q1.1 Write R code to create a numeric vector of 6 marks and compute its sum, mean, and length using built-in functions.
+Ans:
+marks <- c(75, 80, 65, 90, 70, 85)
+
+sum(marks)
+mean(marks)
+length(marks)
+
+Q1.2 Write R code to create a list containing your name, age, and city. Print each element of the list separately.
+Ans:
+student <- list(
+  name = "Mansi",
+  age = 20,
+  city = "Ahilyanagar"
+)
+
+print(student$name)
+print(student$age)
+print(student$city)
+
+Q1.3 Write R code to create a Data Frame for 4 students with columns Name and Marks. Print the data frame.
+Ans:
+students <- data.frame(
+  Name = c("Amit", "Pooja", "Mansi", "Rahul"),
+  Marks = c(75, 82, 90, 68)
+)
+
+print(students)
+
+Q1.4 Write any example code for "for loop".
+Ans:
+for(i in 1:5) {
+  print(i)
+}
+
+Q2 [6 Marks]
+Q2.1 Write R code using a for loop to print numbers from 1 to 10 and, using if-else, print whether each number is even or odd.
+Ans:
+for(i in 1:10) {
+  if(i %% 2 == 0) {
+    print(paste(i, "is Even"))
+  } else {
+    print(paste(i, "is Odd"))
+  }
+}
+
+Q2.2 Make function for addition and subtraction. Check by your example.
+Ans:
+calculate <- function(a, b) {
+  addition <- a + b
+  subtraction <- a - b
+  
+  print(paste("Addition =", addition))
+  print(paste("Subtraction =", subtraction))
+}
+
+calculate(20, 10)
+Output:
+Addition = 30
+Subtraction = 10
+Q2.3 Write R code to create a 3×3 matrix using the matrix() function and print its second row and second column separately.
+m <- matrix(1:9, nrow = 3, ncol = 3)
+
+print(m)
+
+# Second row
+print(m[2, ])
+
+# Second column
+print(m[, 2])
+
+Q3 [10 Marks]
+Q3. Write R code to load the built-in mtcars dataset. Perform basic EDA by printing its dimensions (dim()), structure (str()), and statistical summary (summary()). Also find and print the car name with maximum and minimum horsepower (hp) using which.max(), which.min() and rownames().
+Ans:
+# Load mtcars dataset
+data(mtcars)
+
+# Print dimensions
+print(dim(mtcars))
+
+# Print structure
+print(str(mtcars))
+
+# Print statistical summary
+print(summary(mtcars))
+
+# Find maximum horsepower
+max_hp <- which.max(mtcars$hp)
+
+# Find minimum horsepower
+min_hp <- which.min(mtcars$hp)
+
+# Print car name with maximum horsepower
+print(rownames(mtcars)[max_hp])
+
+# Print car name with minimum horsepower
+print(rownames(mtcars)[min_hp])
+
+Q4 [10 Marks]
+Q4. Write an R function called calculateGrade() that accepts a vector of marks for 5 subjects, and returns the total, average, and a grade (use if-else: >=75 'A', >=60 'B', >=40 'C', else 'F'). Call the function with a sample set of marks and print the results.
+Ans:
+# Create function
+calculateGrade <- function(marks) {
+  
+  # Calculate total
+  total <- sum(marks)
+  
+  # Calculate average
+  average <- mean(marks)
+  
+  # Calculate grade
+  if (average >= 75) {
+    grade <- "A"
+  } else if (average >= 60) {
+    grade <- "B"
+  } else if (average >= 40) {
+    grade <- "C"
+  } else {
+    grade <- "F"
+  }
+  
+  # Return results
+  return(list(
+    Total = total,
+    Average = average,
+    Grade = grade
+  ))
+}
+
+# Sample marks for 5 subjects
+marks <- c(80, 75, 85, 70, 90)
+
+# Call the function
+result <- calculateGrade(marks)
+
+# Print results
+print(result)
